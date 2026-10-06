@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { api } from '../lib/api'
 import { tokens } from '../lib/tokens'
-import type { LoginRequires2fa, TokenPair, User } from '../types/api'
+import type { LoginRequires2fa, Role, TokenPair, User } from '../types/api'
 import { AuthContext, type AuthValue, type RegisterInput } from './auth-context'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -45,6 +45,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const pair = await api<TokenPair>('/users/verify-2fa', {
       method: 'POST',
       json: { email, code },
+      retry: false,
+    })
+    tokens.set(pair)
+    const me = await api<User>('/users/me')
+    setUser(me)
+  }, [])
+
+  const demoLogin = useCallback(async (role: Role) => {
+    const pair = await api<TokenPair>('/users/demo-login', {
+      method: 'POST',
+      json: { role },
       retry: false,
     })
     tokens.set(pair)
@@ -103,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       login,
       verify2fa,
+      demoLogin,
       register,
       verifyEmail,
       resendVerification,
@@ -116,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       login,
       verify2fa,
+      demoLogin,
       register,
       verifyEmail,
       resendVerification,

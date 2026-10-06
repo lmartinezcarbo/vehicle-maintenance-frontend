@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import type { LoginRequires2fa, User } from '../types/api'
+import type { LoginRequires2fa, Role, User } from '../types/api'
 
 export interface RegisterInput {
   name: string
@@ -14,6 +14,8 @@ export interface AuthValue {
   loading: boolean
   login: (email: string, password: string) => Promise<LoginRequires2fa>
   verify2fa: (email: string, code: string) => Promise<void>
+  /** Public demo shortcut; resolves to an error on a real deployment. */
+  demoLogin: (role: Role) => Promise<void>
   register: (input: RegisterInput) => Promise<User>
   verifyEmail: (email: string, code: string) => Promise<void>
   resendVerification: (email: string) => Promise<void>

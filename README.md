@@ -16,7 +16,15 @@ parts, expenses and Stripe payments, behind role-based access.
 
 ## Demo accounts
 
-All three log in with an emailed one-time code (2FA):
+The sign-in page shows **one-click demo buttons** (`Enter as customer /
+mechanic / admin`): pick one and you are straight in — no email needed.
+They only appear while the backend runs with `DEMO_MODE=true`, which is
+the case for this live demo; a real deployment hides them.
+
+The three seeded accounts, if you prefer the full password + emailed 2FA
+flow. The addresses are the author's own, so the emailed code only reaches
+those inboxes — use the demo buttons for a live walkthrough, or register
+your own account to see the real verification + 2FA codes in *your* inbox:
 
 | Role | Email | Password |
 | --- | --- | --- |
@@ -26,7 +34,9 @@ All three log in with an emailed one-time code (2FA):
 
 ## What it does
 
-* **Auth flow** — register, verify email, log in, 2FA, forgot/reset password
+* **Auth flow** — register, verify email, log in, 2FA, forgot/reset password,
+  plus one-click demo login for the seeded accounts when the backend runs in
+  demo mode
 * **Vehicles** — list with search and pagination, detail, photo upload,
   and the mechanic verification step
 * **Maintenance records** — create/edit, the `in_progress → ready →

@@ -19,6 +19,15 @@ export interface LoginRequires2fa {
   requires_2fa: true
 }
 
+/**
+ * Public demo shortcut. `enabled` is false on a real deployment, and the
+ * login page simply hides the demo buttons then.
+ */
+export interface DemoAvailability {
+  enabled: boolean
+  roles: Role[]
+}
+
 /* ------------------------------------------------------------------ *
  * Vehicles (GET/POST /vehicles, …) — reference of the F24 endpoints. *
  * ------------------------------------------------------------------ */
