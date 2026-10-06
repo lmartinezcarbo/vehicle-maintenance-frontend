@@ -1,5 +1,11 @@
-// JWT pair in localStorage: the backend hands the tokens in the body, so a
-// cookie would mean changing the auth flow (decision: keep the API as is).
+// JWT pair in localStorage.
+//
+// Trade-off, stated on purpose: localStorage is readable by any script on
+// the page, so an XSS bug would leak both tokens. The alternative
+// (httpOnly, SameSite cookies) is stronger but needs a backend/auth-flow
+// change, so this demo keeps the API as is and relies on React's default
+// escaping. A product handling real money would move the refresh token
+// into an httpOnly cookie.
 const ACCESS_KEY = 'vma.access'
 const REFRESH_KEY = 'vma.refresh'
 
