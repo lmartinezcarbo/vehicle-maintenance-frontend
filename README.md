@@ -21,16 +21,10 @@ mechanic / admin`): pick one and you are straight in — no email needed.
 They only appear while the backend runs with `DEMO_MODE=true`, which is
 the case for this live demo; a real deployment hides them.
 
-The three seeded accounts, if you prefer the full password + emailed 2FA
-flow. The addresses are the author's own, so the emailed code only reaches
-those inboxes — use the demo buttons for a live walkthrough, or register
-your own account to see the real verification + 2FA codes in *your* inbox:
-
-| Role | Email | Password |
-| --- | --- | --- |
-| `customer` — owns the demo vehicle and pays | `lmartinezcarbo1994@gmail.com` | `ProdDemo-2026-vmapi` |
-| `mechanic` | `lmartinezcarbo@gmail.com` | `MechDemo-2026-vmapi` |
-| `admin` | `lmartinezcarbo+admin@gmail.com` | `AdminDemo-2026-vmapi` |
+The three seeded accounts cover the three roles — `customer` (owns the
+demo vehicle and pays), `mechanic` and `admin` — but their credentials are
+not published. Use the demo buttons, or register your own account to see
+the real verification + 2FA codes arrive in *your* inbox.
 
 ## What it does
 
