@@ -18,8 +18,24 @@ interface RequestOptions extends Omit<RequestInit, 'body'> {
   json?: unknown
   /** Form body for the OAuth2 login endpoint. */
   form?: URLSearchParams
+  /** Multipart body; the browser sets the boundary itself. */
+  formData?: FormData
+  /** Query string params; empty/undefined values are dropped. */
+  query?: Record<string, string | number | boolean | undefined | null>
   /** Set to false to opt out of the refresh-and-retry dance (login, 2FA). */
   retry?: boolean
+}
+
+/** Builds a query string, skipping empty values (GET list endpoints). */
+export function buildQuery(
+  params: Record<string, string | number | boolean | undefined | null>,
+): string {
+  const sp = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null || value === '') continue
+    sp.set(key, String(value))
+  }
+  return sp.toString()
 }
 
 async function toApiError(res: Response): Promise<ApiError> {
@@ -30,6 +46,10 @@ async function toApiError(res: Response): Promise<ApiError> {
       const d = (payload as { detail: unknown }).detail
       if (typeof d === 'string') detail = d
       else if (Array.isArray(d)) detail = d.map(String).join('; ')
+    } else if (payload && typeof payload === 'object' && 'error' in payload) {
+      // slowapi rate limits answer {"error": "..."} instead of {"detail": ...}
+      const e = (payload as { error: unknown }).error
+      if (typeof e === 'string') detail = e
     }
   } catch {
     // Non-JSON error body: keep the status text.
@@ -68,7 +88,7 @@ export function tryRefresh(): Promise<boolean> {
 }
 
 export async function api<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { json, form, retry = true, ...init } = options
+  const { json, form, formData, query, retry = true, ...init } = options
   const headers = new Headers(init.headers)
   const access = tokens.getAccess()
   if (access) headers.set('Authorization', `Bearer ${access}`)
@@ -80,9 +100,12 @@ export async function api<T>(path: string, options: RequestOptions = {}): Promis
   } else if (form !== undefined) {
     headers.set('Content-Type', 'application/x-www-form-urlencoded')
     body = form.toString()
+  } else if (formData !== undefined) {
+    body = formData
   }
 
-  const res = await fetch(`${BASE}${path}`, { ...init, headers, body })
+  const qs = buildQuery(query ?? {})
+  const res = await fetch(`${BASE}${path}${qs ? `?${qs}` : ''}`, { ...init, headers, body })
 
   if (res.ok) {
     if (res.status === 204) return undefined as T
@@ -97,6 +120,16 @@ export async function api<T>(path: string, options: RequestOptions = {}): Promis
   }
 
   throw await toApiError(res)
+}
+
+/** Binary GET (vehicle photos): raw body with the auth header attached. */
+export async function apiBlob(path: string): Promise<Blob> {
+  const headers = new Headers()
+  const access = tokens.getAccess()
+  if (access) headers.set('Authorization', `Bearer ${access}`)
+  const res = await fetch(`${BASE}${path}`, { headers })
+  if (!res.ok) throw await toApiError(res)
+  return res.blob()
 }
 
 export const API_BASE = BASE
