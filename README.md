@@ -77,8 +77,14 @@ The dev server runs on **5173**; the backend repo ships a local-only
 npm run dev       # dev server (strict port)
 npm run build     # tsc -b && vite build
 npm run lint      # oxlint
+npm run test      # vitest run (jsdom)
 npm run preview   # serve the production build
 ```
+
+Tests use **Vitest** with **Testing Library**. They cover the pure helpers
+in `src/lib/` (token store, the query-string builder, the payment
+round-trip, formatting) plus one component test (`Field`) that documents
+the pattern. GitHub Actions runs lint, tests and build on every push.
 
 ## Project layout
 
