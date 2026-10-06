@@ -29,3 +29,14 @@ export function apiErrorMessage(err: unknown): string {
   if (err instanceof Error && err.message) return err.message
   return 'Something went wrong. Please try again.'
 }
+
+/** Tone-coded pill for the role shown in the header. */
+export function roleBadgeCx(role: string): string {
+  const tone =
+    role === 'admin'
+      ? 'bg-violet-100 text-violet-700'
+      : role === 'mechanic'
+        ? 'bg-amber-100 text-amber-700'
+        : 'bg-blue-100 text-blue-700'
+  return `inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize ${tone}`
+}

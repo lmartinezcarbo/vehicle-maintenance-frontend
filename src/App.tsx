@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { AppLayout } from './components/AppLayout'
 import { useAuth } from './context/auth-context'
+import DashboardPage from './pages/DashboardPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
@@ -33,20 +35,6 @@ function RequireAuth({ children }: { children: ReactNode }) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />
   }
   return <>{children}</>
-}
-
-/** Temporary home until F24 builds the real dashboard. */
-function DashboardPlaceholder() {
-  const { user } = useAuth()
-  return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="text-2xl font-semibold text-neutral-900">Welcome, {user?.name}</h1>
-      <p className="mt-2 text-sm text-neutral-500">
-        You're signed in as <span className="font-medium">{user?.role}</span>. The dashboard lands
-        in F24.
-      </p>
-    </main>
-  )
 }
 
 export default function App() {
@@ -106,13 +94,16 @@ export default function App() {
 
       {/* App: F24–F25 */}
       <Route
-        path="/app/*"
+        path="/app"
         element={
           <RequireAuth>
-            <DashboardPlaceholder />
+            <AppLayout />
           </RequireAuth>
         }
-      />
+      >
+        <Route index element={<DashboardPage />} />
+      </Route>
+      <Route path="/app/*" element={<Navigate to="/app" replace />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
