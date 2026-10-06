@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useRef } from 'react'
 import { api } from '../lib/api'
 import { lastPayment } from '../lib/lastPayment'
 import { queryKeys } from '../lib/queryKeys'
@@ -23,14 +24,26 @@ export function useCreatePayment() {
 
 /**
  * Reads one payment — never with `checkout_url` (the server only hands it
- * out on creation). Pass `refetchInterval` to poll after returning from
- * Stripe while the webhook is still travelling.
+ * out on creation). With `poll` it keeps asking while the status is
+ * `pending` (the webhook travels asynchronously), stopping after a minute
+ * so an abandoned tab doesn't poll forever.
  */
-export function usePayment(id: number | null, refetchInterval?: number) {
+export function usePayment(id: number | null, options: { poll?: boolean } = {}) {
+  const deadline = useRef<number | null>(null)
   return useQuery<Payment>({
     queryKey: queryKeys.payment(id ?? -1),
-    queryFn: () => api<Payment>(`/payments/${id}`),
+    queryFn: () => {
+      // Set on the first fetch, not during render (purity).
+      deadline.current ??= Date.now() + 60_000
+      return api<Payment>(`/payments/${id}`)
+    },
     enabled: id !== null && Number.isFinite(id),
-    refetchInterval,
+    refetchInterval: (query) =>
+      options.poll &&
+      query.state.data?.status === 'pending' &&
+      deadline.current !== null &&
+      Date.now() < deadline.current
+        ? 2_000
+        : false,
   })
 }

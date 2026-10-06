@@ -83,6 +83,19 @@ export function statusLabel(status: string): string {
       : 'Completed'
 }
 
+/** Payment pill: pending → paid | failed | expired. */
+export function paymentStatusCx(status: string): string {
+  const tone =
+    status === 'paid'
+      ? 'bg-emerald-100 text-emerald-700'
+      : status === 'pending'
+        ? 'bg-amber-100 text-amber-700'
+        : status === 'failed'
+          ? 'bg-red-100 text-red-700'
+          : 'bg-neutral-200 text-neutral-600'
+  return `inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${tone}`
+}
+
 /** The API serializes Decimals as strings ("89.99"). */
 export function formatMoney(value: string | number): string {
   return `$${Number(value).toFixed(2)}`

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../context/auth-context'
+import { useCreatePayment } from '../../hooks/usePayments'
 import {
   useDeleteMaintenanceRecord,
   useMaintenanceRecord,
@@ -34,6 +35,7 @@ export default function RecordDetailPage() {
 
   const markReady = useMarkRecordReady()
   const remove = useDeleteMaintenanceRecord()
+  const pay = useCreatePayment()
   const [error, setError] = useState<string | null>(null)
 
   if (recordQuery.isPending) {
@@ -62,6 +64,11 @@ export default function RecordDetailPage() {
     staff &&
     (record.status === 'in_progress' || (user?.role === 'admin' && record.status === 'ready'))
   const canMarkReady = staff && record.status === 'in_progress'
+  // Only the vehicle's owner may start the checkout (the server enforces it).
+  const canPay =
+    record.status === 'ready' &&
+    vehicleQuery.data !== undefined &&
+    vehicleQuery.data.user_id === user?.id
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-6 py-10">
@@ -76,6 +83,33 @@ export default function RecordDetailPage() {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
+          {canPay ? (
+            <button
+              type="button"
+              disabled={pay.isPending}
+              onClick={() =>
+                pay.mutate(
+                  { maintenance_record_id: record.id },
+                  {
+                    onSuccess: (payment) => {
+                      if (payment.checkout_url) {
+                        // Full navigation: Stripe owns the next screens.
+                        window.location.assign(payment.checkout_url)
+                      } else {
+                        setError('Stripe did not return a checkout URL.')
+                      }
+                    },
+                    onError: (err) => setError(apiErrorMessage(err)),
+                  },
+                )
+              }
+              className={buttonPrimaryCx}
+            >
+              {pay.isPending
+                ? 'Redirecting…'
+                : `Pay ${formatMoney(record.total_cost)}`}
+            </button>
+          ) : null}
           {canMarkReady ? (
             <button
               type="button"
