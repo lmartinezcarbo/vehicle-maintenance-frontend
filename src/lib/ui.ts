@@ -63,3 +63,30 @@ export function verifiedCx(verified: boolean): string {
     ? 'inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700'
     : 'inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700'
 }
+
+/** Record status pill: in_progress → ready → completed. */
+export function statusCx(status: string): string {
+  const tone =
+    status === 'completed'
+      ? 'bg-emerald-100 text-emerald-700'
+      : status === 'ready'
+        ? 'bg-blue-100 text-blue-700'
+        : 'bg-amber-100 text-amber-700'
+  return `inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${tone}`
+}
+
+export function statusLabel(status: string): string {
+  return status === 'in_progress'
+    ? 'In progress'
+    : status === 'ready'
+      ? 'Ready'
+      : 'Completed'
+}
+
+/** The API serializes Decimals as strings ("89.99"). */
+export function formatMoney(value: string | number): string {
+  return `$${Number(value).toFixed(2)}`
+}
+
+export const infoCx =
+  'rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-700'

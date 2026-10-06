@@ -6,6 +6,9 @@ import DashboardPage from './pages/DashboardPage'
 import VehicleDetailPage from './pages/vehicles/VehicleDetailPage'
 import VehicleFormPage from './pages/vehicles/VehicleFormPage'
 import VehiclesPage from './pages/vehicles/VehiclesPage'
+import RecordDetailPage from './pages/records/RecordDetailPage'
+import RecordFormPage from './pages/records/RecordFormPage'
+import RecordsPage from './pages/records/RecordsPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
@@ -110,6 +113,12 @@ export default function App() {
           <Route path="new" element={<VehicleFormPage mode="create" />} />
           <Route path=":id" element={<VehicleDetailPage />} />
           <Route path=":id/edit" element={<VehicleFormPage mode="edit" />} />
+        </Route>
+        <Route path="records">
+          <Route index element={<RecordsPage />} />
+          <Route path="new" element={<RecordFormPage mode="create" />} />
+          <Route path=":id" element={<RecordDetailPage />} />
+          <Route path=":id/edit" element={<RecordFormPage mode="edit" />} />
         </Route>
       </Route>
       <Route path="/app/*" element={<Navigate to="/app" replace />} />
