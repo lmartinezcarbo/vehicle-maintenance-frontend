@@ -7,6 +7,7 @@ import type {
   MaintenancePartCreate,
   MaintenancePartUpdate,
   Part,
+  PartCreate,
 } from '../types/api'
 
 export interface PartListParams extends ListParams {
@@ -76,6 +77,43 @@ export function useDeleteMaintenancePart() {
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ['maintenance-parts'] })
       void qc.invalidateQueries({ queryKey: ['records'] })
+    },
+  })
+}
+
+/* ---------------------- Catalog CRUD (admin) ---------------------- */
+
+/** Admin only (403 otherwise): every catalog view refreshes. */
+export function useCreatePart() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: PartCreate) =>
+      api<Part>('/parts/', { method: 'POST', json: input }),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ['parts'] })
+    },
+  })
+}
+
+export function useUpdatePart() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: number; input: Partial<PartCreate> }) =>
+      api<Part>(`/parts/${id}`, { method: 'PATCH', json: input }),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ['parts'] })
+    },
+  })
+}
+
+export function useDeletePart() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: number) =>
+      api<{ message: string }>(`/parts/${id}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ['parts'] })
+      // Lines already using the part keep their own copy: nothing to refresh.
     },
   })
 }

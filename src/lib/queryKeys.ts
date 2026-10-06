@@ -14,4 +14,6 @@ export const queryKeys = {
   parts: (params: ListParams = {}) => ['parts', params] as const,
   maintenanceParts: (params: ListParams = {}) => ['maintenance-parts', params] as const,
   expenses: (params: ListParams = {}) => ['expenses', params] as const,
+  payment: (id: number) => ['payment', id] as const,
+  users: (params: ListParams = {}) => ['users', params] as const,
 }

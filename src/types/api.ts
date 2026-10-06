@@ -160,6 +160,35 @@ export interface ExpenseUpdate {
   expense_date?: string
 }
 
+/* ------------------------------------------------------------------ *
+ * Payments (F25) — POST /payments/ (Stripe Checkout) · GET /payments/{id} *
+ * ------------------------------------------------------------------ */
+
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'expired'
+
+export interface Payment {
+  id: number
+  maintenance_record_id: number
+  /** Decimal serialized as string ("89.99"). */
+  amount: string
+  currency: string
+  status: PaymentStatus
+  stripe_checkout_session_id: string | null
+  created_at: string
+  paid_at: string | null
+  /** Only on creation: the URL the browser must open at Stripe. */
+  checkout_url?: string
+}
+
+export interface PaymentCreate {
+  maintenance_record_id: number
+}
+
+/** PATCH /users/{id}/role — admin only. */
+export interface UserRoleUpdate {
+  role: Role
+}
+
 /* --------------------- Shared list query params -------------------- */
 
 /** Every GET collection accepts these (defaults: limit 10, offset 0). */
