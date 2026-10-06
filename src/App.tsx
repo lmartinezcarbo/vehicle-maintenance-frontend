@@ -10,6 +10,8 @@ import RecordDetailPage from './pages/records/RecordDetailPage'
 import RecordFormPage from './pages/records/RecordFormPage'
 import RecordsPage from './pages/records/RecordsPage'
 import PaymentReturnPage from './pages/payments/PaymentReturnPage'
+import PartsPage from './pages/parts/PartsPage'
+import UsersPage from './pages/users/UsersPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
@@ -125,6 +127,8 @@ export default function App() {
           <Route path="success" element={<PaymentReturnPage kind="success" />} />
           <Route path="cancel" element={<PaymentReturnPage kind="cancel" />} />
         </Route>
+        <Route path="parts" element={<PartsPage />} />
+        <Route path="users" element={<UsersPage />} />
       </Route>
       <Route path="/app/*" element={<Navigate to="/app" replace />} />
 

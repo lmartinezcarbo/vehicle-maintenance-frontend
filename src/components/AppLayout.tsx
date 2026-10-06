@@ -36,6 +36,14 @@ export function AppLayout() {
               <NavLink to="/app/records" className={navCx}>
                 Records
               </NavLink>
+              <NavLink to="/app/parts" className={navCx}>
+                Parts
+              </NavLink>
+              {user?.role === 'admin' ? (
+                <NavLink to="/app/users" className={navCx}>
+                  Users
+                </NavLink>
+              ) : null}
             </nav>
           </div>
           <div className="flex items-center gap-3">
