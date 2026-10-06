@@ -40,3 +40,26 @@ export function roleBadgeCx(role: string): string {
         : 'bg-blue-100 text-blue-700'
   return `inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize ${tone}`
 }
+
+/** Content panel (page width, unlike the fixed auth card). */
+export const panelCx = 'rounded-xl border border-neutral-200 bg-white p-6 shadow-sm'
+
+export const buttonPrimaryCx =
+  'rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50'
+
+export const buttonSecondaryCx =
+  'rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50'
+
+export const buttonDangerCx =
+  'rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50'
+
+export const thCx = 'px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-neutral-500'
+
+export const tdCx = 'px-3 py-2 text-sm text-neutral-700'
+
+/** Verified pill used in lists and detail views. */
+export function verifiedCx(verified: boolean): string {
+  return verified
+    ? 'inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700'
+    : 'inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700'
+}

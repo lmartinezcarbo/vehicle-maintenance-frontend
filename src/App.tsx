@@ -3,6 +3,9 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AppLayout } from './components/AppLayout'
 import { useAuth } from './context/auth-context'
 import DashboardPage from './pages/DashboardPage'
+import VehicleDetailPage from './pages/vehicles/VehicleDetailPage'
+import VehicleFormPage from './pages/vehicles/VehicleFormPage'
+import VehiclesPage from './pages/vehicles/VehiclesPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
@@ -102,6 +105,12 @@ export default function App() {
         }
       >
         <Route index element={<DashboardPage />} />
+        <Route path="vehicles">
+          <Route index element={<VehiclesPage />} />
+          <Route path="new" element={<VehicleFormPage mode="create" />} />
+          <Route path=":id" element={<VehicleDetailPage />} />
+          <Route path=":id/edit" element={<VehicleFormPage mode="edit" />} />
+        </Route>
       </Route>
       <Route path="/app/*" element={<Navigate to="/app" replace />} />
 

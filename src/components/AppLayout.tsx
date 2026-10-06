@@ -30,6 +30,9 @@ export function AppLayout() {
               <NavLink to="/app" end className={navCx}>
                 Dashboard
               </NavLink>
+              <NavLink to="/app/vehicles" className={navCx}>
+                Vehicles
+              </NavLink>
             </nav>
           </div>
           <div className="flex items-center gap-3">
