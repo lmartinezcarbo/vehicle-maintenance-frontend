@@ -1,5 +1,7 @@
 # Vehicle Maintenance Frontend
 
+[![CI](https://github.com/lmartinezcarbo/vehicle-maintenance-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/lmartinezcarbo/vehicle-maintenance-frontend/actions/workflows/ci.yml)
+
 Web client for the **[Vehicle Maintenance API](https://github.com/lmartinezcarbo/vehicle-maintenance-api)** —
 a workshop management app: vehicles, maintenance records with a lifecycle,
 parts, expenses and Stripe payments, behind role-based access.
