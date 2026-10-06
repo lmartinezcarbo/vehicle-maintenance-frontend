@@ -90,3 +90,9 @@ export function formatMoney(value: string | number): string {
 
 export const infoCx =
   'rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-700'
+
+/** Local date as YYYY-MM-DD (for <input type="date"> defaults). */
+export function today(): string {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}

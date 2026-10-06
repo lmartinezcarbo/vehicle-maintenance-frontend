@@ -7,6 +7,8 @@ import {
   useMarkRecordReady,
 } from '../../hooks/useRecords'
 import { useVehicle } from '../../hooks/useVehicles'
+import { RecordExpensesSection } from './RecordExpensesSection'
+import { RecordPartsSection } from './RecordPartsSection'
 import {
   apiErrorMessage,
   buttonDangerCx,
@@ -187,6 +189,15 @@ export default function RecordDetailPage() {
           </div>
         </dl>
       </section>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <RecordPartsSection recordId={record.id} editable={canEdit} />
+        <RecordExpensesSection
+          recordId={record.id}
+          vehicleId={record.vehicle_id}
+          editable={canEdit}
+        />
+      </div>
     </main>
   )
 }

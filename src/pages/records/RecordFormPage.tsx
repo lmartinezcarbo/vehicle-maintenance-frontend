@@ -17,6 +17,7 @@ import {
   inputCx,
   labelCx,
   panelCx,
+  today,
 } from '../../lib/ui'
 
 interface FormInitial {
@@ -26,11 +27,6 @@ interface FormInitial {
   service_date: string
   labor_cost: string
   notes: string
-}
-
-function today(): string {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 export default function RecordFormPage({ mode }: { mode: 'create' | 'edit' }) {
